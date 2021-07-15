@@ -3,8 +3,12 @@ import { FormWrapper, FromSubmitButtons, MutedText, FormTextField } from './Form
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setModalStatus } from '../../../Redux/Actions';
 
 const LoginForm = ( { Switch } ) => {
+    //Redux Setup
+    const dispatch = useDispatch();
 
     // Validate Form
     // Phone Number RegEx
@@ -27,8 +31,29 @@ const LoginForm = ( { Switch } ) => {
             "mobile": mobile,
             "password": password
         } )
-            .then( response => console.log( response ) )
-            .catch( error => console.log( error ) )
+            .then( response => {
+                const { name, email, mobile, id } = response.data.data.user;
+                if ( response.status === 200 ) {
+                    // Set Modal Status
+                    dispatch( setModalStatus( {
+                        showModal: true,
+                        type: 'login',
+                        status: 'successfull',
+                        message: `${name} عزیز درخواست ورود شما با موفقیت انجام شد`,
+                        btnLabel: 'باشه',
+                    } ) );
+                }
+            } )
+            .catch( error => {
+                // Set Modal Status
+                dispatch( setModalStatus( {
+                    showModal: true,
+                    type: 'login',
+                    status: 'faild',
+                    message: `کاربر گرامی درخواست ورود شما با مشکل مواجه شد`,
+                    btnLabel: 'امتحان دوباره',
+                } ) );
+            } )
     };
 
     return (

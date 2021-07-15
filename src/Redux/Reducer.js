@@ -1,5 +1,11 @@
 const initialState = {
-    modalStatus: []
+    modalStatus: [{
+        showModal: false,
+        type: '',
+        status: '',
+        message: ``,
+        btnLabel: '',
+    }]
 };
 
 const AppReducer = ( state = initialState, { type, payload } ) => {

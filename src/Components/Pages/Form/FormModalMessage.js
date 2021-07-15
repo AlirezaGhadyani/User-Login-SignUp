@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { IoCheckmarkCircleOutline, IoWarning } from 'react-icons/io5';
+import { useSelector, useDispatch } from 'react-redux';
+import { setModalStatus } from '../../../Redux/Actions';
 
 // Styles
 const ModalContainer = styled.div`
@@ -58,16 +60,35 @@ margin-top: 1.8rem;
 `;
 
 const FormModalMessage = () => {
+    // Get Modal Status
+    const ModalStatus = useSelector( state => state.modalStatus );
+    const { showModal, status, message, btnLabel } = ModalStatus;
+    // Use Dispatch For Hide Modal
+    const dispatch = useDispatch();
+
     return (
-        <ModalContainer>
-            <ModalMessageWrapper>
-                <ModalIcon>
-                    <IoCheckmarkCircleOutline color="#2ecc71" />
-                </ModalIcon>
-                <ModalMessage>ورود شما به حساب کاربری <br /> با موفقیت انجام شد</ModalMessage>
-                <ModalButton bg="#2ecc71">باشه</ModalButton>
-            </ModalMessageWrapper>
-        </ModalContainer>
+        <>
+            {showModal && (
+                <ModalContainer onClick={() => dispatch( setModalStatus( { showModal: false } ) )}>
+                    <ModalMessageWrapper onClick={( event ) => event.stopPropagation()}>
+                        <ModalIcon>
+                            {status === 'successfull' ? (
+                                <IoCheckmarkCircleOutline color="#2ecc71" />
+                            ) : (
+                                <IoWarning color="#e74c3c" />
+                            )}
+                        </ModalIcon>
+                        <ModalMessage>{message}</ModalMessage>
+                        <ModalButton
+                            bg={status === 'successfull' ? '#2ecc71' : '#e74c3c'}
+                            onClick={() => dispatch( setModalStatus( { showModal: false } ) )}>
+                            {btnLabel}
+                        </ModalButton>
+                    </ModalMessageWrapper>
+                </ModalContainer>
+            )}
+        </>
+
     )
 }
 
