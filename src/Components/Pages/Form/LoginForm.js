@@ -2,6 +2,7 @@ import React from 'react';
 import { FormWrapper, FromSubmitButtons, MutedText, FormTextField } from './FormComponents';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
 
 const LoginForm = ( { Switch } ) => {
 
@@ -19,7 +20,15 @@ const LoginForm = ( { Switch } ) => {
 
     // Handle On Submit Form
     const handleSubmitForm = ( values ) => {
-        console.log( values );
+        const { mobile, password } = values;
+        // Post User Information To Server As Login
+        axios.post( process.env.REACT_APP_LOGIN_KEY, {
+            "captcha": "string",
+            "mobile": mobile,
+            "password": password
+        } )
+            .then( response => console.log( response ) )
+            .catch( error => console.log( error ) )
     };
 
     return (
@@ -36,7 +45,7 @@ const LoginForm = ( { Switch } ) => {
                         <FormTextField type="tel" name="mobile" placeholder="شماره موبایل خود را وارد کنید" />
                         <FormTextField type="password" name="password" placeholder="رمز خود را وارد کنید" />
                         <FromSubmitButtons type="submit">ورود</FromSubmitButtons>
-                        <MutedText>حساب کاربری ندارید؟ <a onClick={() => Switch()}>ایحاد حساب</a></MutedText>
+                        <MutedText>حساب کاربری ندارید؟ <a href="#" onClick={() => Switch()}>ایحاد حساب</a></MutedText>
                     </Form>
                 )}
             </Formik>

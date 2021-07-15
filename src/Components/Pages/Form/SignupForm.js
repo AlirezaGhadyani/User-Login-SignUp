@@ -2,6 +2,7 @@ import React from 'react';
 import { FormWrapper, FromSubmitButtons, MutedText, FormTextField } from './FormComponents';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
 
 const SignupForm = ( { Switch } ) => {
 
@@ -25,7 +26,16 @@ const SignupForm = ( { Switch } ) => {
 
     // Handle On Submit Form
     const handleSubmitForm = ( values ) => {
-        console.log( values );
+        const { email, mobile, name, password } = values;
+        // Post User Information To Server As Signup
+        axios.post( process.env.REACT_APP_SIGNUP_KEY, {
+            "email": email,
+            "mobile": mobile,
+            "name": name,
+            "password": password
+        } )
+            .then( response => console.log( response ) )
+            .catch( error => console.log( error ) )
     };
 
     return (
@@ -46,7 +56,7 @@ const SignupForm = ( { Switch } ) => {
                         <FormTextField type="tel" name="mobile" placeholder="شماره موبایل خود را وارد کنید" />
                         <FormTextField type="password" name="password" placeholder="رمز خود را وارد کنید" />
                         <FromSubmitButtons type="submit">ایجاد حساب</FromSubmitButtons>
-                        <MutedText>قبلا ثبت نام کرده اید؟<a onClick={() => Switch()}>ورود به حساب</a></MutedText>
+                        <MutedText>قبلا ثبت نام کرده اید؟<a href="#" onClick={() => Switch()}>ورود به حساب</a></MutedText>
                     </Form>
                 )}
             </Formik>
