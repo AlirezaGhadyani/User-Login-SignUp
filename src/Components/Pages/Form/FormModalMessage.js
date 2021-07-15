@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { IoCheckmarkCircleOutline, IoWarning } from 'react-icons/io5';
 import { useSelector, useDispatch } from 'react-redux';
 import { setModalStatus } from '../../../Redux/Actions';
+import { useHistory } from 'react-router-dom';
 
 // Styles
 const ModalContainer = styled.div`
@@ -65,6 +66,8 @@ const FormModalMessage = () => {
     const { showModal, status, message, btnLabel } = ModalStatus;
     // Use Dispatch For Hide Modal
     const dispatch = useDispatch();
+    // Use Histry for rich the profile page
+    let history = useHistory();
 
     return (
         <>
@@ -81,12 +84,17 @@ const FormModalMessage = () => {
                         <ModalMessage>{message}</ModalMessage>
                         <ModalButton
                             bg={status === 'successfull' ? '#2ecc71' : '#e74c3c'}
-                            onClick={() => dispatch( setModalStatus( { showModal: false } ) )}>
+                            onClick={() => {
+                                dispatch( setModalStatus( { showModal: false } ) );
+                                if ( status === 'successfull' )
+                                    history.push( '/profile' );
+                            }}>
                             {btnLabel}
                         </ModalButton>
                     </ModalMessageWrapper>
                 </ModalContainer>
-            )}
+            )
+            }
         </>
 
     )

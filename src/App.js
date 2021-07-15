@@ -1,6 +1,8 @@
 import GlobalStyle from "./Assets/Styles/GlobalStyle";
 import styled from "styled-components";
 import Form from './Components/Pages/Form/Form';
+import Profile from "./Components/Pages/Profile/Profile";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Styles
 const AppContainer = styled.main`
@@ -14,10 +16,15 @@ align-items: center;
 
 function App() {
   return (
-    <AppContainer>
-      <GlobalStyle />
-      <Form />
-    </AppContainer>
+    <Router>
+      <AppContainer>
+        <GlobalStyle />
+        <Switch>
+          <Route exact path="/profile" component={Profile} />
+          <Route exact path="/loginForm" component={Form} />
+        </Switch>
+      </AppContainer>
+    </Router>
   );
 }
 

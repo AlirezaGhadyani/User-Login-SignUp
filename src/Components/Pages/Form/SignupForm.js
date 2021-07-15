@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FormWrapper, FromSubmitButtons, MutedText, FormTextField } from './FormComponents';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setUserStatus, setModalStatus, setUserData } from '../../../Redux/Actions';
+import { setModalStatus, setUserData } from '../../../Redux/Actions';
 
 const SignupForm = ( { Switch } ) => {
     //Redux Setup
@@ -43,8 +43,6 @@ const SignupForm = ( { Switch } ) => {
                 const { token } = response.data.data;
 
                 if ( response.status === 200 ) {
-                    // Set User Status
-                    localStorage.setItem( "userStatus", 'signedUp' );
                     // Set Modal Status
                     dispatch( setModalStatus( {
                         showModal: true,
@@ -59,6 +57,8 @@ const SignupForm = ( { Switch } ) => {
                     // Set User Data
                     localStorage.setItem( "userData", JSON.stringify( { name, email, mobile, id } ) );
                 }
+
+                dispatch( setUserData( JSON.parse( localStorage.getItem( "userData" ) ) ) );
             } )
             .catch( error => {
                 // Set Modal Status
@@ -71,12 +71,6 @@ const SignupForm = ( { Switch } ) => {
                 } ) );
             } )
     };
-
-    // Get User Status And User Data from Local Storeage When component mount
-    useEffect( () => {
-        dispatch( setUserData( JSON.parse( localStorage.getItem( "userData" ) ) ) );
-        dispatch( setUserStatus( localStorage.getItem( "userStatus" ) ) );
-    }, [] );
 
     return (
         <FormWrapper>
