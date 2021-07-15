@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import { motion } from 'framer-motion';
+import FormModalMessage from './FormModalMessage';
 
 // Styles
 const FormContainer = styled.section`
@@ -148,6 +149,7 @@ const Form = () => {
                     )}
                 </InnerForm>
             </FormWrapper>
+            <FormModalMessage />
         </FormContainer>
     )
 }
