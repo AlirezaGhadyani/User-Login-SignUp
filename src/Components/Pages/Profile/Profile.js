@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FromSubmitButtons } from '../Form/FormComponents';
 import { useDispatch } from 'react-redux';
-import { setUserData } from '../../../Redux/Actions';
+import { setUserData, setModalStatus } from '../../../Redux/Actions';
 import EditUser from './EditUser';
 import FormModalMessage from '../Form/FormModalMessage';
+import axios from 'axios';
 
 // Styles
 const NoDataContainer = styled.div`
@@ -93,6 +94,33 @@ const Profile = () => {
     // get modal status
     const modalStatus = useSelector( state => state.modalStatus );
 
+    // Handle Logout
+    const handlLogout = () => {
+        axios.post( process.env.REACT_APP_LOGOUT_USER_KEY )
+            .then( response => {
+                if ( response.status === 200 ) {
+                    // Set Modal Status
+                    dispatch( setModalStatus( {
+                        showModal: true,
+                        type: 'logout',
+                        status: 'successfull',
+                        message: `شما از حساب کاربری خود خارج شدید`,
+                        btnLabel: 'خداحافظ',
+                    } ) );
+                }
+            } )
+            .catch( err => {
+                // Set Modal Status
+                dispatch( setModalStatus( {
+                    showModal: true,
+                    type: 'logout',
+                    status: 'faild',
+                    message: `کاربر گرامی درخواست خروج شما از حساب کاربری با خطا مواجه شد`,
+                    btnLabel: 'امتحان دوباره',
+                } ) );
+            } )
+    }
+
     return (
         <>
             {userData ? (
@@ -104,12 +132,16 @@ const Profile = () => {
                     <EditBtnWrapper>
                         <FromSubmitButtons width="auto" font="1.3rem" padd="1.4rem"
                             onClick={() => setShowEditForm( true )}>ویرایش اطلاعات</FromSubmitButtons>
-                        <FromSubmitButtons width="auto" font="1.3rem" padd="1.4rem">خروج از حساب کاربری</FromSubmitButtons>
+                        <FromSubmitButtons
+                            width="auto"
+                            font="1.3rem"
+                            padd="1.4rem"
+                            onClick={handlLogout}>خروج از حساب کاربری</FromSubmitButtons>
                     </EditBtnWrapper>
                     {showEditForm && (
                         <EditUser setShowEditForm={setShowEditForm} />
                     )}
-                    {modalStatus.type === 'update' && (
+                    {modalStatus.type === 'update' || modalStatus.type === 'logout' && (
                         <FormModalMessage />
                     )}
                 </UserDataContainer>
