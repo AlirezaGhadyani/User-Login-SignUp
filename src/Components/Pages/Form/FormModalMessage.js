@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { IoCheckmarkCircleOutline, IoWarning } from 'react-icons/io5';
 import { useSelector, useDispatch } from 'react-redux';
-import { setModalStatus } from '../../../Redux/Actions';
+import { setModalStatus, removeUserData } from '../../../Redux/Actions';
 import { useHistory } from 'react-router-dom';
 
 // Styles
@@ -64,11 +64,23 @@ margin-top: 1.8rem;
 const FormModalMessage = () => {
     // Get Modal Status
     const ModalStatus = useSelector( state => state.modalStatus );
-    const { showModal, status, message, btnLabel } = ModalStatus;
+    const { showModal, status, message, btnLabel, type } = ModalStatus;
     // Use Dispatch For Hide Modal
     const dispatch = useDispatch();
     // Use Histry for rich the profile page
     let history = useHistory();
+
+    // Modal Btn Click
+    const handleModalBtnClick = () => {
+        dispatch( setModalStatus( { showModal: false } ) );
+        if ( status === 'successfull' )
+            history.push( '/profile' );
+        if ( type === 'logout' && status === 'faild' ) {
+            localStorage.removeItem( "userData" );
+            localStorage.removeItem( "userToken" );
+            window.location.reload()
+        }
+    }
 
     return (
         <>
@@ -85,11 +97,7 @@ const FormModalMessage = () => {
                         <ModalMessage>{message}</ModalMessage>
                         <ModalButton
                             bg={status === 'successfull' ? '#2ecc71' : '#e74c3c'}
-                            onClick={() => {
-                                dispatch( setModalStatus( { showModal: false } ) );
-                                if ( status === 'successfull' )
-                                    history.push( '/profile' );
-                            }}>
+                            onClick={handleModalBtnClick}>
                             {btnLabel}
                         </ModalButton>
                     </ModalMessageWrapper>

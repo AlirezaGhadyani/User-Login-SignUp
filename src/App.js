@@ -20,7 +20,7 @@ function App() {
       <AppContainer>
         <GlobalStyle />
         <Switch>
-          <Route exact path="/loginForm" component={Form} />
+          <Route exact path="/" component={Form} />
           <Route path="/profile" component={Profile} />
         </Switch>
       </AppContainer>

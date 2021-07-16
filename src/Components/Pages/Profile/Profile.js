@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FromSubmitButtons } from '../Form/FormComponents';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserData, setModalStatus } from '../../../Redux/Actions';
 import EditUser from './EditUser';
 import FormModalMessage from '../Form/FormModalMessage';
@@ -83,6 +82,7 @@ const Profile = () => {
     const [showEditForm, setShowEditForm] = useState( false );
     // set user data
     const dispatch = useDispatch();
+    const modalStatus = useSelector( state => state.modalStatus );
 
     useEffect( () => {
         dispatch( setUserData( JSON.parse( localStorage.getItem( "userData" ) ) ) );
@@ -92,7 +92,7 @@ const Profile = () => {
     // get user data
     const userData = useSelector( state => state.userData );
     // get modal status
-    const modalStatus = useSelector( state => state.modalStatus );
+    const getModalStatus = useSelector( state => state.modalStatus );
 
     // Handle Logout
     const handlLogout = () => {
@@ -116,7 +116,7 @@ const Profile = () => {
                     type: 'logout',
                     status: 'faild',
                     message: `کاربر گرامی درخواست خروج شما از حساب کاربری با خطا مواجه شد`,
-                    btnLabel: 'امتحان دوباره',
+                    btnLabel: 'خروج در هر صورت',
                 } ) );
             } )
     }
@@ -141,13 +141,11 @@ const Profile = () => {
                     {showEditForm && (
                         <EditUser setShowEditForm={setShowEditForm} />
                     )}
-                    {modalStatus.type === 'update' || modalStatus.type === 'logout' && (
-                        <FormModalMessage />
-                    )}
+                    <FormModalMessage />
                 </UserDataContainer>
             ) : (
                 <NoDataContainer>
-                    <span>شما به حساب خود وارد نشده اید اگر <br /> حسابی دارید <Link to="/loginForm">وارد شوید</Link></span>
+                    <span>شما به حساب خود وارد نشده اید اگر <br /> حسابی دارید <Link to="/">وارد شوید</Link></span>
                 </NoDataContainer>
             )}
         </>
