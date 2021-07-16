@@ -19,21 +19,21 @@ padding: 0 0.8rem;
 `;
 
 export const FromSubmitButtons = styled.button`
-width: 100%;
+width: ${props => props.width ? props.width : '100%'};
 font-family: titleFont;
-font-size: 1.6rem;
+font-size: ${props => props.font ? props.font : '1.6rem'};
 font-weight: 700;
 letter-spacing: .15rem;
-padding: 0.6rem 0;
+padding: 0.6rem ${props => props.padd ? props.padd : '0'};
 background-size: 200% auto;
 color: white;
 box-shadow: 0 0 20px #eee;
 background-image: linear-gradient(-90deg, rgba(192,57,43,1) 20%, rgba(231,76,60,1) 100%);
 transition: all 0.5s ease;
 border: 0;
-margin-top: 1rem;
 border-radius: 1.8rem;
 cursor: pointer;
+margin-top: 1rem;
 :hover{
 background-position: right center;
 transition: all 0.5s ease;

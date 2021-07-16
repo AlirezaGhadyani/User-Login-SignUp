@@ -20,8 +20,8 @@ function App() {
       <AppContainer>
         <GlobalStyle />
         <Switch>
-          <Route exact path="/profile" component={Profile} />
           <Route exact path="/loginForm" component={Form} />
+          <Route path="/profile" component={Profile} />
         </Switch>
       </AppContainer>
     </Router>

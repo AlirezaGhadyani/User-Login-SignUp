@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 // Styles
 const ModalContainer = styled.div`
 position: fixed;
+top: 0;
 width: 100vw;
 height: 100vh;
 display: flex;
@@ -15,7 +16,7 @@ justify-content: center;
 align-items: center;
 background: rgba(0,0,0,0.15);
 backdrop-filter: blur(2px);
-z-index: 100;
+z-index: 1000;
 `;
 
 const ModalMessageWrapper = styled.div`

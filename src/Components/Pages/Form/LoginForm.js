@@ -4,7 +4,7 @@ import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setModalStatus, setUserData } from '../../../Redux/Actions';
+import { setModalStatus } from '../../../Redux/Actions';
 
 const LoginForm = ( { Switch } ) => {
     //Redux Setup
@@ -49,8 +49,6 @@ const LoginForm = ( { Switch } ) => {
                     // Set User Data
                     localStorage.setItem( "userData", JSON.stringify( { name, email, mobile, id } ) );
                 }
-
-                dispatch( setUserData( JSON.parse( localStorage.getItem( "userData" ) ) ) );
             } )
             .catch( error => {
                 // Set Modal Status
