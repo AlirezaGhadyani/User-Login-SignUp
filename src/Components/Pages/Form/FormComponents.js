@@ -66,7 +66,7 @@ align-items: flex-start;
 
 const TextFieldInp = styled.input`
 width: 100%;
-font-family: mainFont;
+font-family: enFont;
 font-size: 1.2rem;
 font-weight: 500;
 padding: 0.4rem;
@@ -74,6 +74,10 @@ border: 2px solid rgba(200,200,200,0.3);
 border-radius: 0.5rem;
 ::placeholder{
     color: rgba(200,200,200,1);
+    font-family: titleFont;
+}
+
+&[name="name"]{
     font-family: titleFont;
 }
 `;
