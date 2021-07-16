@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 import { FormWrapper, FromSubmitButtons, FormTextField } from '../Form/FormComponents';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
@@ -53,10 +52,6 @@ cursor: pointer;
 
 const EditUser = ( { setShowEditForm } ) => {
     const dispatch = useDispatch();
-    // get user data
-    const userData = useSelector( state => state.userData );
-    const { email, name, id } = userData;
-
     // Validate Form
     const validate = yup.object( {
         email: yup.string()
@@ -74,7 +69,7 @@ const EditUser = ( { setShowEditForm } ) => {
         // call patch request for update user data
         axios.patch( process.env.REACT_APP_UPDATE_USER_KEY, {
             "email": email,
-            "id": id,
+            "id": "id",
             "name": name,
             "password": password
         } )

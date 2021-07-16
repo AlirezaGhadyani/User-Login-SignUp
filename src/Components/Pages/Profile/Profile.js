@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FromSubmitButtons } from '../Form/FormComponents';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUserData, setModalStatus } from '../../../Redux/Actions';
 import EditUser from './EditUser';
 import FormModalMessage from '../Form/FormModalMessage';
@@ -82,18 +82,6 @@ const Profile = () => {
     const [showEditForm, setShowEditForm] = useState( false );
     // set user data
     const dispatch = useDispatch();
-    const modalStatus = useSelector( state => state.modalStatus );
-
-    useEffect( () => {
-        dispatch( setUserData( JSON.parse( localStorage.getItem( "userData" ) ) ) );
-        // eslint-disable-next-line
-    }, [] );
-
-    // get user data
-    const userData = useSelector( state => state.userData );
-    // get modal status
-    const getModalStatus = useSelector( state => state.modalStatus );
-
     // Handle Logout
     const handlLogout = () => {
         axios.post( process.env.REACT_APP_LOGOUT_USER_KEY )
@@ -123,12 +111,12 @@ const Profile = () => {
 
     return (
         <>
-            {userData ? (
+            {false ? (
                 <UserDataContainer>
                     <ProfileTitle>پروفایل من</ProfileTitle>
-                    <DataName>نام : {userData.name}</DataName>
-                    <DataEmailMobile>ایمیل : {userData.email}</DataEmailMobile>
-                    <DataEmailMobile>شماره تلفن : {userData.mobile}</DataEmailMobile>
+                    <DataName>نام :</DataName>
+                    <DataEmailMobile>ایمیل :</DataEmailMobile>
+                    <DataEmailMobile>شماره تلفن : </DataEmailMobile>
                     <EditBtnWrapper>
                         <FromSubmitButtons width="auto" font="1.3rem" padd="1.4rem"
                             onClick={() => setShowEditForm( true )}>ویرایش اطلاعات</FromSubmitButtons>

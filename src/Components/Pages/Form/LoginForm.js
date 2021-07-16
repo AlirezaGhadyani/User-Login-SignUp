@@ -32,7 +32,7 @@ const LoginForm = ( { Switch } ) => {
             "password": password
         } )
             .then( response => {
-                const { name, email, mobile, id } = response.data.data.user;
+                const { name } = response.data.data.user;
                 const { token } = response.data.data;
 
                 if ( response.status === 200 ) {
@@ -46,8 +46,6 @@ const LoginForm = ( { Switch } ) => {
                     } ) );
                     //Set User Token In LocalStoreage
                     localStorage.setItem( "userToken", token );
-                    // Set User Data
-                    localStorage.setItem( "userData", JSON.stringify( { name, email, mobile, id } ) );
                 }
             } )
             .catch( error => {
