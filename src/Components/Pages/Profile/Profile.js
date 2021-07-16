@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -78,6 +78,8 @@ align-items: center;
 `;
 
 const Profile = () => {
+    // Show Edit form state
+    const [showEditForm, setShowEditForm] = useState( false );
     // set user data
     const dispatch = useDispatch();
 
@@ -100,10 +102,13 @@ const Profile = () => {
                     <DataEmailMobile>ایمیل : {userData.email}</DataEmailMobile>
                     <DataEmailMobile>شماره تلفن : {userData.mobile}</DataEmailMobile>
                     <EditBtnWrapper>
-                        <FromSubmitButtons width="auto" font="1.3rem" padd="1.4rem">ویرایش اطلاعات</FromSubmitButtons>
+                        <FromSubmitButtons width="auto" font="1.3rem" padd="1.4rem"
+                            onClick={() => setShowEditForm( true )}>ویرایش اطلاعات</FromSubmitButtons>
                         <FromSubmitButtons width="auto" font="1.3rem" padd="1.4rem">خروج از حساب کاربری</FromSubmitButtons>
                     </EditBtnWrapper>
-                    <EditUser />
+                    {showEditForm && (
+                        <EditUser setShowEditForm={setShowEditForm} />
+                    )}
                     {modalStatus.type === 'update' && (
                         <FormModalMessage />
                     )}

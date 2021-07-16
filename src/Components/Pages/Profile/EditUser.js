@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setModalStatus } from '../../../Redux/Actions';
+import { FaTimes } from 'react-icons/fa';
 
 // Styles
 const UserEditContainer = styled.div`
@@ -23,6 +24,7 @@ z-index: 100;
 `;
 
 const EditFormWrapper = styled.div`
+position: relative;
 width: 500px;
 max-width: 95%;
 background: #fff;
@@ -37,7 +39,19 @@ text-align: center;
 margin: 1rem 0;
 `;
 
-const EditUser = () => {
+const TimesButton = styled.button`
+background: transparent;
+border: 0;
+position: absolute;
+top: 0.5rem;
+right: 0.5rem;
+cursor: pointer;
+& svg{
+    font-size: 2rem;
+}
+`;
+
+const EditUser = ( { setShowEditForm } ) => {
     const dispatch = useDispatch();
     // get user data
     const userData = useSelector( state => state.userData );
@@ -92,6 +106,9 @@ const EditUser = () => {
         <UserEditContainer>
             <EditFormWrapper>
                 <EditFormTitle>ویرایش اطلاعات</EditFormTitle>
+                <TimesButton onClick={() => setShowEditForm( false )}>
+                    <FaTimes />
+                </TimesButton>
                 <FormWrapper>
                     <Formik
                         initialValues={{
