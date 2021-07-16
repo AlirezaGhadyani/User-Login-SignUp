@@ -133,11 +133,16 @@ const Form = () => {
                 <TopWrapper>
                     <BackDrop initial={false} transition={expendingTransition} animate={isExpended ? 'expended' : 'collapsed'} variants={backDropVariants} />
                     <TopWrapperHeader>
-                        <HeaderText>خوش آمدید</HeaderText>
                         {activeForm === 'login' ? (
-                            <HeaderTextSub>برای ادامه وارد حساب کاربری خود شوید</HeaderTextSub>
+                            <>
+                                <HeaderText>ورود</HeaderText>
+                                <HeaderTextSub>برای ادامه وارد حساب کاربری خود شوید</HeaderTextSub>
+                            </>
                         ) : (
-                            <HeaderTextSub>برای خود یک حساب کاربری ایجاد کنید</HeaderTextSub>
+                            <>
+                                <HeaderText>ایجاد حساب</HeaderText>
+                                <HeaderTextSub>برای خود یک حساب کاربری ایجاد کنید</HeaderTextSub>
+                            </>
                         )}
                     </TopWrapperHeader>
                 </TopWrapper>
