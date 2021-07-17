@@ -96,7 +96,7 @@ const Profile = () => {
 
     // Handle Logout
     const handlLogout = () => {
-        axios.post( process.env.REACT_APP_LOGOUT_USER_KEY )
+        axios.post( 'https://api-test.nikdiba.com/nikdiba/api/user/logout' )
             .then( response => {
                 if ( response.status === 200 ) {
                     // Set Modal Status

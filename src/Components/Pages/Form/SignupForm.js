@@ -32,7 +32,7 @@ const SignupForm = ( { Switch } ) => {
     const handleSubmitForm = ( values ) => {
         const { email, mobile, name, password } = values;
         // Post User Information To Server As Signup
-        axios.post( process.env.REACT_APP_SIGNUP_KEY, {
+        axios.post( 'https://api-test.nikdiba.com/nikdiba/api/test/register', {
             "email": email,
             "mobile": mobile,
             "name": name,
