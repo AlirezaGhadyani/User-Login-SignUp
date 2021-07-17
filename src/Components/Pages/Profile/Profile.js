@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FromSubmitButtons } from '../Form/FormComponents';
 import { useDispatch } from 'react-redux';
-import { setUserData, setModalStatus } from '../../../Redux/Actions';
+import { setModalStatus } from '../../../Redux/Actions';
 import EditUser from './EditUser';
 import FormModalMessage from '../Form/FormModalMessage';
 import axios from 'axios';
@@ -82,6 +82,22 @@ const Profile = () => {
     const [showEditForm, setShowEditForm] = useState( false );
     // set user data
     const dispatch = useDispatch();
+
+    // Handle Authorize User
+    const handleAuthorizeUser = () => {
+        axios.get( process.env.REACT_APP_AUTHORIZE, {
+            headers: {
+                XXSRFTOKEN: localStorage.getItem( "userToken" )
+            }
+        } )
+            .then( response => console.log( response ) )
+            .catch( error => console.log( error ) )
+    }
+
+    useEffect( () => {
+        handleAuthorizeUser();
+    }, [] )
+
     // Handle Logout
     const handlLogout = () => {
         axios.post( process.env.REACT_APP_LOGOUT_USER_KEY )

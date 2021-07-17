@@ -34,7 +34,7 @@ const LoginForm = ( { Switch } ) => {
             .then( response => {
                 const { name } = response.data.data.user;
                 const { token } = response.data.data;
-
+                console.log( response )
                 if ( response.status === 200 ) {
                     // Set Modal Status
                     dispatch( setModalStatus( {
@@ -74,7 +74,7 @@ const LoginForm = ( { Switch } ) => {
                         <FormTextField type="tel" name="mobile" placeholder="شماره موبایل خود را وارد کنید" />
                         <FormTextField type="password" name="password" placeholder="رمز خود را وارد کنید" />
                         <FromSubmitButtons type="submit">ورود</FromSubmitButtons>
-                        <MutedText>حساب کاربری ندارید؟ <a href="#" onClick={() => Switch()}>ایحاد حساب</a></MutedText>
+                        <MutedText>حساب کاربری ندارید؟ <a href="#" onClick={() => Switch()}>ایجاد حساب</a></MutedText>
                     </Form>
                 )}
             </Formik>

@@ -30,7 +30,6 @@ const SignupForm = ( { Switch } ) => {
 
     // Handle On Submit Form
     const handleSubmitForm = ( values ) => {
-        console.log( values )
         const { email, mobile, name, password } = values;
         // Post User Information To Server As Signup
         axios.post( process.env.REACT_APP_SIGNUP_KEY, {
