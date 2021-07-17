@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FromSubmitButtons } from '../Form/FormComponents';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUserData, setModalStatus } from '../../../Redux/Actions';
+import { useDispatch } from 'react-redux';
+import { setModalStatus } from '../../../Redux/Actions';
 import EditUser from './EditUser';
 import FormModalMessage from '../Form/FormModalMessage';
 import axios from 'axios';
@@ -78,57 +78,63 @@ align-items: center;
 `;
 
 const Profile = () => {
-    // Show Edit form state
     const [showEditForm, setShowEditForm] = useState( false );
-    // set user data
+    const [userData, setUserData] = useState( [] );
     const dispatch = useDispatch();
-    const modalStatus = useSelector( state => state.modalStatus );
+
+    // Handle Authorize User
+    const handleAuthorizeUser = () => {
+        axios.get( 'https://api-test.nikdiba.com/nikdiba/api/user/authorize', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem( "userToken" )}`
+            }
+        } )
+            .then( response => {
+                console.log( response );
+                setUserData( response.data.data.user );
+            } )
+            .catch( error => console.log( error ) )
+    }
 
     useEffect( () => {
-        dispatch( setUserData( JSON.parse( localStorage.getItem( "userData" ) ) ) );
-        // eslint-disable-next-line
-    }, [] );
-
-    // get user data
-    const userData = useSelector( state => state.userData );
-    // get modal status
-    const getModalStatus = useSelector( state => state.modalStatus );
+        handleAuthorizeUser();
+    }, [] )
 
     // Handle Logout
     const handlLogout = () => {
-        axios.post( 'https://api-test.nikdiba.com/nikdiba/api/user/logout' )
-            .then( response => {
-                if ( response.status === 200 ) {
-                    // Set Modal Status
-                    dispatch( setModalStatus( {
-                        showModal: true,
-                        type: 'logout',
-                        status: 'successfull',
-                        message: `شما از حساب کاربری خود خارج شدید`,
-                        btnLabel: 'خداحافظ',
-                    } ) );
-                }
-            } )
-            .catch( err => {
-                // Set Modal Status
-                dispatch( setModalStatus( {
-                    showModal: true,
-                    type: 'logout',
-                    status: 'faild',
-                    message: `کاربر گرامی درخواست خروج شما از حساب کاربری با خطا مواجه شد`,
-                    btnLabel: 'خروج در هر صورت',
-                } ) );
-            } )
+        if ( localStorage.getItem( "userToken" ) ) {
+            localStorage.clear();
+            // Set Modal Status
+            dispatch( setModalStatus( {
+                showModal: true,
+                type: 'logout',
+                status: 'successfull',
+                message: `شما از حساب کاربری خود خارج شدید`,
+                btnLabel: 'خداحافظ',
+            } ) );
+        }
+        else {
+            // Set Modal Status
+            dispatch( setModalStatus( {
+                showModal: true,
+                type: 'logout',
+                status: 'faild',
+                message: `کاربر گرامی درخواست خروج شما از حساب کاربری با خطا مواجه شد`,
+                btnLabel: 'امتحان دوباره',
+            } ) );
+        }
     }
+
+    const { name, email, mobile } = userData;
 
     return (
         <>
             {userData ? (
                 <UserDataContainer>
                     <ProfileTitle>پروفایل من</ProfileTitle>
-                    <DataName>نام : {userData.name}</DataName>
-                    <DataEmailMobile>ایمیل : {userData.email}</DataEmailMobile>
-                    <DataEmailMobile>شماره تلفن : {userData.mobile}</DataEmailMobile>
+                    <DataName>نام : {name}</DataName>
+                    <DataEmailMobile>ایمیل : {email}</DataEmailMobile>
+                    <DataEmailMobile>شماره تلفن : {mobile} </DataEmailMobile>
                     <EditBtnWrapper>
                         <FromSubmitButtons width="auto" font="1.3rem" padd="1.4rem"
                             onClick={() => setShowEditForm( true )}>ویرایش اطلاعات</FromSubmitButtons>
@@ -139,7 +145,7 @@ const Profile = () => {
                             onClick={handlLogout}>خروج از حساب کاربری</FromSubmitButtons>
                     </EditBtnWrapper>
                     {showEditForm && (
-                        <EditUser setShowEditForm={setShowEditForm} />
+                        <EditUser setShowEditForm={setShowEditForm} userId={userData.id} />
                     )}
                     <FormModalMessage />
                 </UserDataContainer>

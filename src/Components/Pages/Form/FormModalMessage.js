@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { IoCheckmarkCircleOutline, IoWarning } from 'react-icons/io5';
 import { useSelector, useDispatch } from 'react-redux';
-import { setModalStatus, removeUserData } from '../../../Redux/Actions';
+import { setModalStatus } from '../../../Redux/Actions';
 import { useHistory } from 'react-router-dom';
 
 // Styles
@@ -75,11 +75,9 @@ const FormModalMessage = () => {
         dispatch( setModalStatus( { showModal: false } ) );
         if ( status === 'successfull' )
             history.push( '/profile' );
-        if ( type === 'logout' && status === 'faild' ) {
-            localStorage.removeItem( "userData" );
-            localStorage.removeItem( "userToken" );
-            window.location.reload()
-        }
+
+        if ( type === 'logout' && status === 'successfull' )
+            history.push( '/' );
     }
 
     return (

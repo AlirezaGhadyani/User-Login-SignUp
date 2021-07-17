@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 import { FormWrapper, FromSubmitButtons, FormTextField } from '../Form/FormComponents';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
@@ -51,12 +50,8 @@ cursor: pointer;
 }
 `;
 
-const EditUser = ( { setShowEditForm } ) => {
+const EditUser = ( { setShowEditForm, userId } ) => {
     const dispatch = useDispatch();
-    // get user data
-    const userData = useSelector( state => state.userData );
-    const { email, name, id } = userData;
-
     // Validate Form
     const validate = yup.object( {
         email: yup.string()
@@ -65,18 +60,19 @@ const EditUser = ( { setShowEditForm } ) => {
             .max( 34, 'حداکثر کاراکتر ورودی 34 می باشد' ),
         password: yup.string()
             .min( 8, 'حداقل 8 کاراکتر باید وارد کنید' )
-            .required( 'لطفا یک رمز وارد کنید' )
     } );
 
     // Handle On Submit Form
     const handleSubmitForm = ( values ) => {
         const { email, name, password } = values;
         // call patch request for update user data
-        axios.patch( process.env.REACT_APP_UPDATE_USER_KEY, {
-            "email": email,
-            "id": id,
-            "name": name,
-            "password": password
+        axios.patch( `https://api-test.nikdiba.com/nikdiba/api/user/profile`, {
+            data: {
+                "email": email,
+                "id": parseInt( userId ),
+                "name": name,
+                "password": password
+            }
         } )
             .then( response => {
                 if ( response.status === 200 ) {
