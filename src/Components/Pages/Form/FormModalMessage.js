@@ -75,6 +75,9 @@ const FormModalMessage = () => {
         dispatch( setModalStatus( { showModal: false } ) );
         if ( status === 'successfull' )
             history.push( '/profile' );
+
+        if ( type === 'logout' && status === 'successfull' )
+            history.push( '/' );
     }
 
     return (

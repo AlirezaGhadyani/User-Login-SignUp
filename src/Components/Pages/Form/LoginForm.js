@@ -26,7 +26,7 @@ const LoginForm = ( { Switch } ) => {
     const handleSubmitForm = ( values ) => {
         const { mobile, password } = values;
         // Post User Information To Server As Login
-        axios.post( process.env.REACT_APP_LOGIN_KEY, {
+        axios.post( 'https://api-test.nikdiba.com/nikdiba/api/test/login', {
             "captcha": "string",
             "mobile": mobile,
             "password": password

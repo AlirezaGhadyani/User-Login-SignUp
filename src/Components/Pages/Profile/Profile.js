@@ -78,19 +78,21 @@ align-items: center;
 `;
 
 const Profile = () => {
-    // Show Edit form state
     const [showEditForm, setShowEditForm] = useState( false );
-    // set user data
+    const [userData, setUserData] = useState( [] );
     const dispatch = useDispatch();
 
     // Handle Authorize User
     const handleAuthorizeUser = () => {
-        axios.get( process.env.REACT_APP_AUTHORIZE, {
+        axios.get( 'https://api-test.nikdiba.com/nikdiba/api/user/authorize', {
             headers: {
-                XXSRFTOKEN: localStorage.getItem( "userToken" )
+                Authorization: `Bearer ${localStorage.getItem( "userToken" )}`
             }
         } )
-            .then( response => console.log( response ) )
+            .then( response => {
+                console.log( response );
+                setUserData( response.data.data.user );
+            } )
             .catch( error => console.log( error ) )
     }
 
@@ -100,39 +102,39 @@ const Profile = () => {
 
     // Handle Logout
     const handlLogout = () => {
-        axios.post( process.env.REACT_APP_LOGOUT_USER_KEY )
-            .then( response => {
-                if ( response.status === 200 ) {
-                    // Set Modal Status
-                    dispatch( setModalStatus( {
-                        showModal: true,
-                        type: 'logout',
-                        status: 'successfull',
-                        message: `شما از حساب کاربری خود خارج شدید`,
-                        btnLabel: 'خداحافظ',
-                    } ) );
-                }
-            } )
-            .catch( err => {
-                // Set Modal Status
-                dispatch( setModalStatus( {
-                    showModal: true,
-                    type: 'logout',
-                    status: 'faild',
-                    message: `کاربر گرامی درخواست خروج شما از حساب کاربری با خطا مواجه شد`,
-                    btnLabel: 'خروج در هر صورت',
-                } ) );
-            } )
+        if ( localStorage.getItem( "userToken" ) ) {
+            localStorage.clear();
+            // Set Modal Status
+            dispatch( setModalStatus( {
+                showModal: true,
+                type: 'logout',
+                status: 'successfull',
+                message: `شما از حساب کاربری خود خارج شدید`,
+                btnLabel: 'خداحافظ',
+            } ) );
+        }
+        else {
+            // Set Modal Status
+            dispatch( setModalStatus( {
+                showModal: true,
+                type: 'logout',
+                status: 'faild',
+                message: `کاربر گرامی درخواست خروج شما از حساب کاربری با خطا مواجه شد`,
+                btnLabel: 'امتحان دوباره',
+            } ) );
+        }
     }
+
+    const { name, email, mobile } = userData;
 
     return (
         <>
-            {false ? (
+            {userData ? (
                 <UserDataContainer>
                     <ProfileTitle>پروفایل من</ProfileTitle>
-                    <DataName>نام :</DataName>
-                    <DataEmailMobile>ایمیل :</DataEmailMobile>
-                    <DataEmailMobile>شماره تلفن : </DataEmailMobile>
+                    <DataName>نام : {name}</DataName>
+                    <DataEmailMobile>ایمیل : {email}</DataEmailMobile>
+                    <DataEmailMobile>شماره تلفن : {mobile} </DataEmailMobile>
                     <EditBtnWrapper>
                         <FromSubmitButtons width="auto" font="1.3rem" padd="1.4rem"
                             onClick={() => setShowEditForm( true )}>ویرایش اطلاعات</FromSubmitButtons>
@@ -143,7 +145,7 @@ const Profile = () => {
                             onClick={handlLogout}>خروج از حساب کاربری</FromSubmitButtons>
                     </EditBtnWrapper>
                     {showEditForm && (
-                        <EditUser setShowEditForm={setShowEditForm} />
+                        <EditUser setShowEditForm={setShowEditForm} userId={userData.id} />
                     )}
                     <FormModalMessage />
                 </UserDataContainer>
