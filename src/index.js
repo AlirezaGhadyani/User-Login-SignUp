@@ -12,3 +12,4 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById( 'root' )
 );
+// Failed to execute 'append' on 'FormData': parameter 2 is not of type 'Blob'
